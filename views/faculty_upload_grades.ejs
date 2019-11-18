@@ -55,6 +55,28 @@
 </head>
 
 <body>
+
+
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-database.js"></script> -->
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7btuFwwl79MAD8f12iLHF2kQkvB1PRbA",
+            authDomain: "express-first-app.firebaseapp.com",
+            databaseURL: "https://express-first-app.firebaseio.com",
+            projectId: "express-first-app",
+            storageBucket: "express-first-app.appspot.com",
+            messagingSenderId: "748619368002",
+            appId: "1:748619368002:web:581e19ab33253b6d9c0fdb",
+            measurementId: "G-ZHQRD4KGLC"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
 
@@ -80,7 +102,7 @@
                         Upload Grades
                         </span>
                         <!-- Here goes the dropdowns etc -->
-                        <select class="btn btn-secondary dropdown-toggle" id="semesterDropDown" onchange="onChangeSemester()">
+                        <select class="btn btn-secondary dropdown-toggle" onchange="onChangeSemester()" id="courseDropdown">
                             <% Object.keys(courses).forEach(key => { %>
                                 <option value= <%= key %> >
                                     <%= key %>
@@ -88,18 +110,45 @@
                             <% }); %>
                         </select>
 
-                        <div class="upload" input type='button'> Choose </div>
+                        <input type="file" id="chooseFileButton" name="chooseFileButton" accept="*.csv" >
 
                     </form>
                     <br>
                     <br>
-                    <input onclick="window.location.href = 'feedback.html';" type="button" class="fadeIn fourth" value="Submit">
+                    <input onclick="onClickSubmitButton()" type="button" class="fadeIn fourth" value="Submit">
                 </div>
             </div>
         </main>
 
 
     </div>
+
+    <script>
+    
+        const COLLEGE_NAME = "IIITA";
+        const CURRENT_YEAR = "2019";
+        const dbReference = firebase.database().ref(COLLEGE_NAME);
+
+        let imageFile;
+
+        function onClickSubmitButton() {
+            let courseCode = document.getElementById("courseDropdown").value;
+
+            const folderName = new Date().getTime();
+            let storageRef = firebase.storage().ref(folderName.toString());
+            let task = storageRef.put(imageFile);
+
+            task.on("state_changed", snapshot => {
+                alert("Uploaded successfuly")
+            });
+        }
+        
+        chooseFileButton.addEventListener("change", e => {
+            imageFile = e.target.files[0];
+        });
+
+    </script>
+
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <!--===============================================================================================-->
     <script src="vendor/jquery/jquery-3.2.1.min.js"></script>

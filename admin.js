@@ -24,6 +24,8 @@ app.use(sessions({
 app.use("/css", express.static(__dirname + "/css"));
 app.use("/scripts", express.static(__dirname + "/scripts"));
 app.use("/images", express.static(__dirname + "/images"));
+app.use("/fonts", express.static(__dirname + "/fonts"));
+
 
 // Initialize Firebase
 let serviceAccount = require("./express-first-app-firebase-adminsdk-evqga-220eb31416.json");
@@ -182,6 +184,10 @@ app.get('/admin-add-student', (req, res) => {
 
 app.get('/admin-add-faculty', (req, res) => {
     res.render("admin_add_faculty");
+});
+
+app.get('/admin-add-course', (req, res) => {
+    res.render("admin_add_course");
 });
 
 app.get('/admin-allocate-course', (req, res) => {

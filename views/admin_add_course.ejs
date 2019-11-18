@@ -53,6 +53,28 @@
 </head>
 
 <body>
+
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-database.js"></script>
+    <script type="text/javascript" src="../scripts/login.js"></script>
+
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7btuFwwl79MAD8f12iLHF2kQkvB1PRbA",
+            authDomain: "express-first-app.firebaseapp.com",
+            databaseURL: "https://express-first-app.firebaseio.com",
+            projectId: "express-first-app",
+            storageBucket: "express-first-app.appspot.com",
+            messagingSenderId: "748619368002",
+            appId: "1:748619368002:web:581e19ab33253b6d9c0fdb",
+            measurementId: "G-ZHQRD4KGLC"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
         <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
             <header class="demo-drawer-header">
@@ -62,24 +84,19 @@
                 </div>
             </header>
             <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-                <a class="mdl-navigation__link" href="admin.html"><i
+                <a class="mdl-navigation__link" ><i
                         class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-                <a class="mdl-navigation__link" href="admin_add_student.html"><i
-                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person_add</i>Add
-                    Student</a>
-                <a class="mdl-navigation__link" href="admin_add_faculty.html"><i
-                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person_add</i>Add
-                    Faculty</a>
-                <a class="mdl-navigation__link" href="admin_add_course.html"><i
-                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">note_add</i>Add
-                    Course</a>
-                <a class="mdl-navigation__link" href="admin_allocate_course_faculty.html"><i
-                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">assignment</i>Allocate
-                    Course</a>
-                <a class="mdl-navigation__link" href="admin_updates.html"><i
-                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">announcement</i>Send
-                    Update</a>
-                <a class="mdl-navigation__link" href="index.html"><i
+                <a class="mdl-navigation__link" onclick="onClickAddStudent()"><i
+                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person_add</i>Add Student</a>
+                <a class="mdl-navigation__link" onclick="onClickAddFaculty()"><i
+                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">person_add</i>Add Faculty</a>
+                <a class="mdl-navigation__link" ><i
+                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">note_add</i>Add Course</a>
+                <a class="mdl-navigation__link" onclick="onClickAllocateCourse()"><i
+                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">assignment</i>Allocate Course</a>
+                <a class="mdl-navigation__link" onclick="onClickSendUpdates()"><i
+                        class="mdl-color-text--blue-grey-400 material-icons" role="presentation">announcement</i>Send Update</a>
+                <a class="mdl-navigation__link" onclick="onClickSignOut()"><i
                         class="mdl-color-text--blue-grey-400 material-icons" role="presentation">cancel</i>Sign Out</a>
             </nav>
         </div>
@@ -90,30 +107,40 @@
                     <h3 class="contact100-form-title">Add Course</h3>
                     <div class="row">
                         <div class="input-group input-group-icon">
-                            <input type="text" placeholder="Course Name" />
+                            <input type="text" placeholder="Course Name" id="course-name"/>
                             <div class="input-icon"><i class="fa fa-user"></i></div>
                         </div>
-                        <div class="col-third">
-                            <div class="input-group">
-                                <h6 class="h6">Credits</h6>
-                                <select>
-                                    <option>5</option>
-                                    <option>3</option>
-                                </select>
-                            </div>
-                        </div>
+
                         <div class="col-third">
                             <div class="input-group">
                                 <h6 class="h6">Course Code</h6>
-                                <select>
-                                    <option>ICNE532C</option>
-                                    <option>ISOE532C</option>
+                                <input type="text" placeholder="Course Code" id="course-code"/>
+                            </div>
+                        </div>
+
+                        <div class="col-third">
+                            <div class="input-group">
+                                <h6 class="h6">Branch</h6>
+                                <input type="text" placeholder="Branch" id="branch"/>
+                            </div>
+                        </div>
+
+                        <div class="col-third">
+                            <div class="input-group">
+                                <h6 class="h6">Credits</h6>
+                                <select id="credits-dropdown">
+                                    <option value="1" >1</option>
+                                    <option value="2" >2</option>
+                                    <option value="3" >3</option>
+                                    <option value="4" >4</option>
+                                    <option value="5" >5</option>
                                 </select>
                             </div>
                         </div>
+                        
                     </div>
                     <div class="col-third">
-                        <input onclick="window.location.href = '';" type="button" class="fadeIn fourth" value="Allocate">
+                        <input onclick="onClickAddButton()" type="button" class="fadeIn fourth" value="Add">
                     </div>
                     <br>
                     <br>
@@ -124,6 +151,57 @@
 
 
     </div>
+
+    <script>
+        const COLLEGE_NAME = "IIITA";
+        const CURRENT_YEAR = "2019";
+        const dbReference = firebase.database().ref(COLLEGE_NAME);
+
+        function onClickAddButton() {
+            let courseName = document.getElementById("course-name").value;
+            let code = document.getElementById("course-code").value;
+            let credits = document.getElementById("credits-dropdown").value;
+            let branch = document.getElementById("branch").value;
+
+            courseDetails = { code, credits, courseName };
+
+            console.log("Registering new course");
+
+            dbReference.child("departments").child(branch).child(code).set(courseDetails, error => {
+                if(!error) {
+                    alert("Course added successfuly");
+                } else {
+                    alert(error);
+                }
+            });
+        }        
+
+        function onClickAddStudent() {
+            window.open("admin-add-student", "_top");
+        }
+
+        function onClickAddFaculty() {
+            window.open("admin-add-faculty", "_top");
+        }
+        
+        function onClickAddCourse() {
+            window.open("admin-add-course", "_top");
+        }
+
+        function onClickAllocateCourse() {
+            window.open("admin-allocate-course", "_top");
+        }
+
+        function onClickSendUpdates() {
+            window.open("admin-send-updates", "_top");
+        }
+
+        function onClickSignOut() {
+            window.open("login", "_top");
+        }
+
+    </script>
+
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </body>
 
